@@ -1,0 +1,6 @@
+/env
+/distribution_code
+/.vs
+/.vscode
+__pycache__
+notes.txt
