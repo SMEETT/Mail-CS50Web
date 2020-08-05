@@ -1,3 +1,11 @@
+html {
+    overflow: -moz-scrollbars-vertical; 
+    overflow-y: scroll;
+  }
+
 textarea {
     min-height: 400px;
+}
+
+#emails-view {
 }

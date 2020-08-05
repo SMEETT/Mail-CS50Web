@@ -2,7 +2,12 @@
 {% load static %}
 
 {% block body %}
+
+<!-- USER EMAIL/HEAD -->
+
     <h2>{{ request.user.email }}</h2>
+
+<!-- NAVI -->
 
     <button class="btn btn-sm btn-outline-primary" id="inbox">Inbox</button>
     <button class="btn btn-sm btn-outline-primary" id="compose">Compose</button>
@@ -11,8 +16,15 @@
     <a class="btn btn-sm btn-outline-primary" href="{% url 'logout' %}">Log Out</a>
     <hr>
 
-    <div id="emails-view">
-    </div>
+<!-- INBOX VIEW -->
+
+    <div id="emails-view"></div>
+
+<!-- EMAIL DETAIL VIEW -->
+
+    <div id='email-detail-view'></div>
+
+<!-- NEW EMAIL (COMPOSE) VIEW -->
 
     <div id="compose-view">
         <h3>New Email</h3>
@@ -27,9 +39,12 @@
                 <input class="form-control" id="compose-subject" placeholder="Subject">
             </div>
             <textarea class="form-control" id="compose-body" placeholder="Body"></textarea>
-            <input type="submit" class="btn btn-primary"/>
+            <input type="submit" id="compose-submit" class="btn btn-primary"/>
         </form>
     </div>
+
+
+
 {% endblock %}
 
 {% block script %}
