@@ -45,6 +45,43 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
+
+
+// function to write new emails
+function compose_email() {
+
+  // Show compose view and hide other views
+  document.querySelector('#emails-view').style.display = 'none';
+  document.querySelector('#email-detail-view').style.display = 'none'
+  document.querySelector('#compose-view').style.display = 'block';
+
+  // Clear out composition fields
+  document.querySelector('#compose-recipients').value = '';
+  document.querySelector('#compose-subject').value = '';
+  document.querySelector('#compose-body').value = '';
+
+  // check for optional argument
+  if (arguments.length != 0) {
+    console.log(arguments[0])
+    const context = arguments[0]
+
+    document.querySelector('#compose-recipients').value = context.sender;
+      // check if subject already starts with "Re:", if not add it
+      if (context.subject.slice(0, 4) === 'Re: ') {
+        document.querySelector('#compose-subject').value = context.subject;
+      } else {
+        document.querySelector('#compose-subject').value = 'Re: ' + context.subject;
+      }
+
+    document.querySelector('#compose-body').value = context.timestamp + " " + context.sender + " wrote: " + context.body;
+
+  }
+
+} // end of compose_email
+
+
+
+
 function view_email(id) {
 
   console.log(id)
@@ -79,9 +116,20 @@ function view_email(id) {
     const email_body = document.createElement('div')
     email_body.innerHTML = "Body: " + email.body
 
+    // Reply button and function-call
+    const email_reply_btn = document.createElement('button')
+    email_reply_btn.innerText = 'Reply'
+    email_reply_btn.onclick = () => {
+      
+      const context = {sender: email.sender, subject: email.subject, timestamp: email.timestamp, body: email.body}
+      compose_email(context)
 
-    email_detail_view.append(email_sender, email_subject, email_timestamp, email_body)
+    } // reply button end
+
+
+    email_detail_view.append(email_sender, email_subject, email_timestamp, email_body, email_reply_btn)
     
+    // mark the e-mail as 'read'
     fetch(`/emails/${id}`, {
       method: 'PUT',
       body: JSON.stringify({
@@ -93,9 +141,6 @@ function view_email(id) {
 }); // end of fetch
 
 } // end of view_email()
-
-
-
 
 
 function load_mailbox(mailbox) {
@@ -218,17 +263,3 @@ function load_mailbox(mailbox) {
 } // end of load_mailbox()
 
 
-// function to write new emails
-function compose_email() {
-
-  // Show compose view and hide other views
-  document.querySelector('#emails-view').style.display = 'none';
-  document.querySelector('#email-detail-view').style.display = 'none'
-  document.querySelector('#compose-view').style.display = 'block';
-
-  // Clear out composition fields
-  document.querySelector('#compose-recipients').value = '';
-  document.querySelector('#compose-subject').value = '';
-  document.querySelector('#compose-body').value = '';
-
-} // compose_email

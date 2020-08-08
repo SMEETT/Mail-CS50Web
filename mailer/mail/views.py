@@ -9,8 +9,9 @@ from django.views.decorators.csrf import csrf_exempt
 
 from .models import User, Email
 
-
+@csrf_exempt
 def index(request):
+
 
     # Authenticated users view their inbox
     if request.user.is_authenticated:
@@ -71,7 +72,7 @@ def compose(request):
 
     return JsonResponse({"message": "Email sent successfully."}, status=201)
 
-
+@csrf_exempt
 @login_required
 def mailbox(request, mailbox):
 
@@ -126,7 +127,7 @@ def email(request, email_id):
             "error": "GET or PUT request required."
         }, status=400)
 
-
+@csrf_exempt
 def login_view(request):
     if request.method == "POST":
 
@@ -146,12 +147,12 @@ def login_view(request):
     else:
         return render(request, "mail/login.html")
 
-
+@csrf_exempt
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("index"))
 
-
+@csrf_exempt
 def register(request):
     if request.method == "POST":
         email = request.POST["email"]
